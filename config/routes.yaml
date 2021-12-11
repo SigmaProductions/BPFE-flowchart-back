@@ -1,0 +1,9 @@
+flow_save:
+  path: /flow
+  controller: App\Controller\FlowController::save
+  methods: [ POST ]
+
+flow_load:
+  path: /flow
+  controller: App\Controller\FlowController::load
+  methods: [ GET ]

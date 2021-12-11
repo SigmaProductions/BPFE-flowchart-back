@@ -1,0 +1,31 @@
+version: '3.5'
+
+services:
+  backend:
+    build: .
+    volumes:
+      - .:/app
+    depends_on:
+      - redis_db
+      - db
+    env_file:
+      - ./.env
+    ports:
+      - "8001:80"
+
+  redis_db:
+    command: bash -c "redis-server --appendonly yes"
+    image: redis
+    volumes:
+      - ./redis-volume:/data
+
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_DB: pgdb
+    volumes:
+      - ./var/docker/db/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
