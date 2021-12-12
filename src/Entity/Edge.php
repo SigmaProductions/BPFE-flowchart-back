@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\EdgeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Internal\TentativeType;
+use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=EdgeRepository::class)
  */
-class Edge
+class Edge implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -86,5 +88,10 @@ class Edge
         $this->physicalId = $physicalId;
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return ['id' => $this->getPhysicalId(), 'target' => $this->getTarget()];
     }
 }

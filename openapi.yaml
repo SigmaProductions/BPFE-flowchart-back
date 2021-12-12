@@ -1,0 +1,148 @@
+openapi: 3.0.2
+info:
+  title: BIK HUB API gateway-aggregator API
+  version: 1.0.0
+paths:
+  /flow:
+    get:
+      summary: Get flow in chart format for displaying and editing on admin side.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flow'
+    post:
+      summary: Create or edit flow.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Flow'
+      responses:
+        '200':
+          description: Successful operation
+
+  /flow/graph:
+    get:
+      summary: Get flow in graph format for displaying on user question-based frontend.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowGraph'
+
+components:
+  schemas:
+    Flow:
+      type: array
+      items:
+        description: Node or edge of the flow.
+        type: object
+        properties:
+          id:
+            type: string
+          position:
+            type: object
+            properties:
+              x:
+                type: number
+              y:
+                type: number
+          type:
+            type: string
+          data:
+            type: object
+            properties:
+              label:
+                type: string
+              endpoint:
+                type: string
+          source:
+            type: string
+            description: id of the source node
+          target:
+            type: string
+            description: id of the target node
+      example:
+        [
+          {
+            "id": "1",
+            "position": {
+              "x": 250,
+              "y": 5
+            },
+            "type": "input",
+            "data": {
+              "label": "Wejscie"
+            }
+          },
+          {
+            "id": "dndnode_c4c7d581-3262-4c50-b5f9-ee9821ea90a7",
+            "position": {
+              "x": 648,
+              "y": 307
+            },
+            "type": "default",
+            "data": {
+              "label": "czy lubi pan kota",
+              "endpoint": "null"
+            }
+          },
+          {
+            "id": "dndnode_e3dbff29-0ce6-4385-a6c6-7a3feba01460",
+            "position": {
+              "x": 469,
+              "y": 337
+            },
+            "type": "default",
+            "data": {
+              "label": "czy owli pan pda",
+              "endpoint": "null"
+            }
+          },
+          {
+            "id": "dndnode_d565fa2d-62d8-459c-9022-b474e117f949",
+            "position": {
+              "x": 757,
+              "y": 388
+            },
+            "type": "default",
+            "data": {
+              "label": "ulubione lody",
+              "endpoint": "null"
+            }
+          },
+          {
+            "id": "reactflow__edge-1null-dndnode_c4c7d581-3262-4c50-b5f9-ee9821ea90a7null",
+            "source": "1",
+            "target": "dndnode_c4c7d581-3262-4c50-b5f9-ee9821ea90a7"
+          },
+          {
+            "id": "reactflow__edge-1null-dndnode_e3dbff29-0ce6-4385-a6c6-7a3feba01460null",
+            "source": "1",
+            "target": "dndnode_e3dbff29-0ce6-4385-a6c6-7a3feba01460"
+          },
+        ]
+    FlowGraph:
+      type: object
+      description: reqursive object of the flow.
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        data:
+          type: object
+          properties:
+            label:
+              type: string
+            endpoint:
+              type: string
+        exitEdges:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowGraph'

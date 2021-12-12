@@ -7,11 +7,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Internal\TentativeType;
 
 /**
  * @ORM\Entity()
  */
-class Node
+class Node implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -164,5 +165,18 @@ class Node
         $this->data = $data;
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        $exitEdges = array_map(function (Edge $edge) {
+            return $edge->jsonSerialize();
+        }, $this->getExitEdges()->toArray());
+        return [
+            'id' => $this->physicalId,
+            'type' => $this->type,
+            'data' => $this->data,
+            'exitEdges' => $exitEdges,
+        ];
     }
 }

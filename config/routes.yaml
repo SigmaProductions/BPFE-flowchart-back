@@ -7,3 +7,8 @@ flow_load:
   path: /flow
   controller: App\Controller\FlowController::load
   methods: [ GET ]
+
+flow_graph:
+  path: /flow/graph
+  controller: App\Controller\FlowController::graph
+  methods: [ GET ]

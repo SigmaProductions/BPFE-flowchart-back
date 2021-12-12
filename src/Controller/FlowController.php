@@ -61,7 +61,7 @@ class FlowController extends AbstractController
         return new JsonResponse([]);
     }
 
-    public function load(Request $request): JsonResponse
+    public function load(): JsonResponse
     {
         $dbNodes = $this->nodeRepository->findAll();
         $response = [];
@@ -86,5 +86,12 @@ class FlowController extends AbstractController
             ];
         }
         return new JsonResponse($response);
+    }
+
+    public function graph(): JsonResponse
+    {
+        return new JsonResponse(
+            $this->nodeRepository->findParentNode()
+        );
     }
 }

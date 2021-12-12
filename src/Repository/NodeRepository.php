@@ -28,4 +28,13 @@ class NodeRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findParentNode(): ?Node
+    {
+        return $this->createQueryBuilder('n')
+            ->leftJoin('n.enterEdge', 'e')
+            ->andWhere('e.id is null')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
